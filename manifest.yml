@@ -1,0 +1,6 @@
+---
+applications:
+- name: buytoday
+  memory: 1G
+  random-route: true
+  path: target/buytoday-1.0.0.jar

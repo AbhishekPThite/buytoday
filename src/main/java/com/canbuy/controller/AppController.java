@@ -18,12 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.canbuy.model.AccountDetail;
 import com.canbuy.model.BuyDecision;
+import com.canbuy.model.LoginRequest;
 
-/**
- * 
- * @author Ramesh
- *
- */
 
 @RestController
 @RequestMapping(value = "/home", produces = "application/json")
@@ -35,11 +31,11 @@ public class AppController {
 	@Autowired
 	private BuyRepository buyRepository;
 
-	@PostMapping(value = "/login")
-	public List<AccountDetail> login(@RequestParam String userName, @RequestParam String pwd) {
+	@PostMapping(path = "/login", consumes = "application/json", produces = "application/json")
+	public List<AccountDetail> login(@RequestBody LoginRequest loginRequest) {
 
 		String custId = null;
-		if (userName.equals("Admin") && pwd.equals("Admin") ? true : false) {
+		if (loginRequest.getUserName().equals("Admin") && loginRequest.getPassword().equals("Admin") ? true : false) {
 			custId = "123";
 		} else {
 			return null;
@@ -65,7 +61,6 @@ public class AppController {
 	@ResponseBody
 	public List<AccountDetail> getAccounts() {
 		List<AccountDetail> accountdetailsList = accountRepository.findAll();
-		// accountdetailsList=mockingDataForAccount.getAccountDetail(custId);
 		return accountdetailsList;
 
 	}
@@ -77,17 +72,6 @@ public class AppController {
 		return buyDecision;
 	}
 
-	/*
-	 * @PostMapping(value = "/createSpendingDetails")
-	 * 
-	 * @ResponseBody public AccountDetail createSpendingDetails(@PathVariable String
-	 * custId, @PathVariable String spendAmount) { AccountDetail accountDetail =
-	 * accountRepository.findByCustId(custId); int balanceAmount =
-	 * Integer.valueOf(accountDetail.getBalance()) - Integer.valueOf(spendAmount);
-	 * accountDetail.setBalance(String.valueOf(balanceAmount)); return
-	 * accountRepository.save(accountDetail); }
-	 */
-	
 	@PutMapping("/fundTransfer/{custId}/{amount}")
 	public ResponseEntity<Object> fundTransfer(@RequestBody AccountDetail accountDetail, @PathVariable String custId,@PathVariable String amount){
 		AccountDetail accountDetails = accountRepository.findByCustId(custId);
@@ -110,17 +94,5 @@ public class AppController {
 		return ResponseEntity.noContent().build();
 	}
 	
-	  @GetMapping("/")
-	    public String main(Model model) {
-	  
-	        return "index"; //view
-	    }
-
-	
-	  
-	  @GetMapping(value = "/dashboard")
-		@ResponseBody
-		public String refreshme() {
-			return null;
-		}
+	 
 }

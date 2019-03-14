@@ -8,11 +8,6 @@ import org.springframework.stereotype.Repository;
 
 import com.canbuy.model.AccountDetail;
 
-/**
- * 
- * @author Ramesh
- *
- */
 @Repository
 public interface AccountRepository extends JpaRepository<AccountDetail, String> {
 
